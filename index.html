@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Captación SBS</title>
+  <style>
+    :root {
+      --navy: #00274D;
+      --teal: #008080;
+      --red: #FF4C4C;
+      --bg: #F5F8FB;
+      --card: #FFFFFF;
+      --text: #16324A;
+      --muted: #6B7A8C;
+      --border: #D9E3EC;
+      --success: #0E9F6E;
+      --warning: #B26A00;
+      --shadow: 0 12px 30px rgba(0, 39, 77, 0.10);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #F7FAFC 0%, #EEF5F7 100%);
+      color: var(--text);
+    }
+
+    .app {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 20px 14px 40px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--navy), #0B4F78);
+      color: white;
+      border-radius: 24px;
+      padding: 22px 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .hero__top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      flex-wrap: wrap;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 1.65rem;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255,255,255,.88);
+      max-width: 650px;
+      line-height: 1.45;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .88rem;
+      white-space: nowrap;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 14px;
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: .93rem;
+      line-height: 1.45;
+      margin-top: -4px;
+      margin-bottom: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field--full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 0.96rem;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.4;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 4px rgba(0, 128, 128, 0.12);
+    }
+
+    .plan-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .plan-option {
+      position: relative;
+    }
+
+    .plan-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .plan-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      cursor: pointer;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+      height: 100%;
+      background: #fff;
+    }
+
+    .plan-card strong {
+      display: block;
+      color: var(--navy);
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .plan-card span {
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.35;
+    }
+
+    .plan-option input:checked + .plan-card {
+      border-color: var(--teal);
+      box-shadow: 0 12px 24px rgba(0, 128, 128, 0.12);
+      transform: translateY(-1px);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F2FBFB 100%);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: .96rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+      box-shadow: 0 10px 22px rgba(0, 128, 128, 0.22);
+    }
+
+    .btn-secondary {
+      background: #EAF3F7;
+      color: var(--navy);
+      border: 1px solid #D4E3EA;
+    }
+
+    .btn-danger {
+      background: #FFF1F1;
+      color: #A83B3B;
+      border: 1px solid #FFD6D6;
+    }
+
+    .status-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .pill--neutral {
+      background: #EEF3F7;
+      color: var(--navy);
+    }
+
+    .pill--success {
+      background: #EAFBF3;
+      color: var(--success);
+    }
+
+    .pill--warning {
+      background: #FFF6E8;
+      color: var(--warning);
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 14px 15px;
+      border-radius: 14px;
+      font-size: .94rem;
+      line-height: 1.45;
+      display: none;
+    }
+
+    .message.show { display: block; }
+    .message.success { background: #EBFBF3; color: #0C7A54; border: 1px solid #C7F0DB; }
+    .message.error { background: #FFF2F2; color: #A63E3E; border: 1px solid #FFD7D7; }
+    .message.info { background: #EEF8FA; color: #165D66; border: 1px solid #CBECEF; }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.45;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .grid, .plan-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 1.4rem;
+      }
+
+      .app {
+        padding: 14px 10px 30px;
+      }
+
+      .card, .hero {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="hero__top">
+        <div>
+          <h1>Captación comercial SBS</h1>
+          <p>Registre contactos de forma rápida desde celular o tablet. Cada envío puede guardarse automáticamente en Google Sheets y, si no hay conexión, queda respaldado localmente para reenviarlo después.</p>
+        </div>
+        <div class="badge">Step Up Business Solutions</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Configuración rápida</h2>
+      <p class="helper">Pegue aquí la URL de su Google Apps Script Web App. El formulario enviará los datos a Google Sheets usando ese endpoint.</p>
+      <div class="grid">
+        <div class="field field--full">
+          <label for="scriptUrl">URL del Web App</label>
+          <input id="scriptUrl" type="url" placeholder="https://script.google.com/macros/s/XXXXXXXXXXXX/exec" />
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-secondary" id="saveConfigBtn">Guardar configuración</button>
+        <button type="button" class="btn-secondary" id="retryBtn">Reenviar pendientes</button>
+        <button type="button" class="btn-danger" id="clearConfigBtn">Limpiar URL</button>
+      </div>
+      <div class="status-bar">
+        <span class="pill pill--neutral" id="sheetStatus">Sheets: sin configurar</span>
+        <span class="pill pill--warning" id="pendingStatus">Pendientes: 0</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Registro de cliente potencial</h2>
+      <p class="helper">Pensado para captación en calle, visitas o reuniones breves.</p>
+
+      <form id="leadForm">
+        <div class="grid">
+          <div class="field">
+            <label for="nombreNegocio">Nombre del negocio</label>
+            <input id="nombreNegocio" name="nombreNegocio" required placeholder="Ej. Spa Armonía" />
+          </div>
+
+          <div class="field">
+            <label for="categoria">Categoría</label>
+            <input id="categoria" name="categoria" placeholder="Ej. Spa, restaurante, odontología" />
+          </div>
+
+          <div class="field field--full">
+            <label for="direccion">Dirección</label>
+            <input id="direccion" name="direccion" placeholder="Ej. Cra. 23 # 62-10" />
+          </div>
+
+          <div class="field">
+            <label for="zona">Zona o barrio</label>
+            <input id="zona" name="zona" placeholder="Ej. El Cable" />
+          </div>
+
+          <div class="field">
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input id="telefono" name="telefono" placeholder="Ej. 3001234567" />
+          </div>
+
+          <div class="field">
+            <label for="contacto">Nombre del contacto</label>
+            <input id="contacto" name="contacto" placeholder="Ej. Patricia Gómez" />
+          </div>
+
+          <div class="field">
+            <label for="cargo">Cargo</label>
+            <select id="cargo" name="cargo">
+              <option value="">Seleccione</option>
+              <option>Dueño/a</option>
+              <option>Administrador/a</option>
+              <option>Encargado/a</option>
+              <option>Recepción</option>
+              <option>Otro</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="instagram">Instagram / red social</label>
+            <input id="instagram" name="instagram" placeholder="Ej. @spaarmonia" />
+          </div>
+
+          <div class="field">
+            <label for="web">Sitio web</label>
+            <input id="web" name="web" placeholder="Ej. www.negocio.com" />
+          </div>
+
+          <div class="field">
+            <label for="necesidad">Necesidad detectada</label>
+            <select id="necesidad" name="necesidad">
+              <option value="">Seleccione</option>
+              <option>Ubicar</option>
+              <option>Mostrar</option>
+              <option>Potenciar</option>
+            </select>
+          </div>
+
+          <div class="field field--full">
+            <label>Plan de interés</label>
+            <div class="plan-grid">
+              <label class="plan-option">
+                <input type="radio" name="plan" value="Presencia" required>
+                <span class="plan-card">
+                  <strong>Presencia</strong>
+                  <span>Ubica el negocio con claridad.</span>
+                </span>
+              </label>
+
+              <label class="plan-option">
+                <input type="radio" name="plan" value="Comercial">
+                <span class="plan-card">
+                  <strong>Comercial</strong>
+                  <span>Muestra mejor lo que ofrece.</span>
+                </span>
+              </label>
+
+              <label class="plan-option">
+                <input type="radio" name="plan" value="Impulso">
+                <span class="plan-card">
+                  <strong>Impulso</strong>
+                  <span>Potencia su presencia comercial.</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="estado">Estado</label>
+            <select id="estado" name="estado">
+              <option>Visitado</option>
+              <option>Interesado</option>
+              <option>Pendiente</option>
+              <option>Seguimiento</option>
+              <option>Cerrado</option>
+              <option>Descartado</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="proximoPaso">Próximo paso</label>
+            <select id="proximoPaso" name="proximoPaso">
+              <option value="">Seleccione</option>
+              <option>Enviar cotización</option>
+              <option>Mostrar demo</option>
+              <option>Hacer llamada</option>
+              <option>Agendar visita</option>
+              <option>Seguimiento por WhatsApp</option>
+            </select>
+          </div>
+
+          <div class="field field--full">
+            <label for="observaciones">Observaciones</label>
+            <textarea id="observaciones" name="observaciones" placeholder="Ej. No se entiende bien todo lo que ofrece. Tiene buen local, pero su presencia digital está floja."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn-primary" id="submitBtn">Guardar contacto</button>
+          <button type="reset" class="btn-secondary">Limpiar formulario</button>
+        </div>
+      </form>
+
+      <div id="message" class="message"></div>
+      <p class="footer-note">Sugerencia: agregue esta página a la pantalla de inicio de su celular para usarla como si fuera una app rápida.</p>
+    </section>
+  </main>
+
+  <script>
+    // =============================
+    // CONFIGURACIÓN BÁSICA
+    // =============================
+    const CONFIG_KEY = 'sbs_script_url';
+    const QUEUE_KEY = 'sbs_pending_leads';
+
+    const form = document.getElementById('leadForm');
+    const scriptUrlInput = document.getElementById('scriptUrl');
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
+    const clearConfigBtn = document.getElementById('clearConfigBtn');
+    const retryBtn = document.getElementById('retryBtn');
+    const sheetStatus = document.getElementById('sheetStatus');
+    const pendingStatus = document.getElementById('pendingStatus');
+    const messageBox = document.getElementById('message');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function showMessage(text, type = 'info') {
+      messageBox.textContent = text;
+      messageBox.className = `message show ${type}`;
+    }
+
+    function hideMessage() {
+      messageBox.className = 'message';
+      messageBox.textContent = '';
+    }
+
+    function getSavedUrl() {
+      return localStorage.getItem(CONFIG_KEY) || '';
+    }
+
+    function saveUrl(url) {
+      localStorage.setItem(CONFIG_KEY, url.trim());
+      updateStatus();
+    }
+
+    function clearUrl() {
+      localStorage.removeItem(CONFIG_KEY);
+      scriptUrlInput.value = '';
+      updateStatus();
+    }
+
+    function getQueue() {
+      try {
+        return JSON.parse(localStorage.getItem(QUEUE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveQueue(queue) {
+      localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+      updateStatus();
+    }
+
+    function addToQueue(payload) {
+      const queue = getQueue();
+      queue.push(payload);
+      saveQueue(queue);
+    }
+
+    function updateStatus() {
+      const savedUrl = getSavedUrl();
+      const pending = getQueue().length;
+      sheetStatus.textContent = savedUrl ? 'Sheets: configurado' : 'Sheets: sin configurar';
+      sheetStatus.className = savedUrl ? 'pill pill--success' : 'pill pill--neutral';
+      pendingStatus.textContent = `Pendientes: ${pending}`;
+      pendingStatus.className = pending > 0 ? 'pill pill--warning' : 'pill pill--success';
+    }
+
+    function collectFormData() {
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      return {
+        ...data,
+        fechaRegistro: new Date().toISOString(),
+        origen: 'Captación SBS móvil'
+      };
+    }
+
+    async function sendToSheet(payload) {
+      const url = getSavedUrl();
+      if (!url) {
+        throw new Error('No ha configurado la URL del Web App de Google Apps Script.');
+      }
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+
+      const text = await response.text();
+      if (!response.ok) {
+        throw new Error(`Error HTTP ${response.status}: ${text}`);
+      }
+
+      return text;
+    }
+
+    async function retryPending() {
+      hideMessage();
+      const queue = getQueue();
+      if (queue.length === 0) {
+        showMessage('No hay registros pendientes por reenviar.', 'info');
+        return;
+      }
+
+      const remaining = [];
+      let sent = 0;
+
+      for (const item of queue) {
+        try {
+          await sendToSheet(item);
+          sent += 1;
+        } catch {
+          remaining.push(item);
+        }
+      }
+
+      saveQueue(remaining);
+
+      if (remaining.length === 0) {
+        showMessage(`Se reenviaron correctamente ${sent} registro(s).`, 'success');
+      } else {
+        showMessage(`Se reenviaron ${sent} registro(s), pero ${remaining.length} sigue(n) pendiente(s).`, 'info');
+      }
+    }
+
+    saveConfigBtn.addEventListener('click', () => {
+      const url = scriptUrlInput.value.trim();
+      if (!url) {
+        showMessage('Pegue primero la URL del Web App.', 'error');
+        return;
+      }
+      saveUrl(url);
+      showMessage('Configuración guardada.', 'success');
+    });
+
+    clearConfigBtn.addEventListener('click', () => {
+      clearUrl();
+      showMessage('Se limpió la URL guardada.', 'info');
+    });
+
+    retryBtn.addEventListener('click', retryPending);
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      hideMessage();
+
+      const payload = collectFormData();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando...';
+
+      try {
+        await sendToSheet(payload);
+        showMessage('Contacto guardado correctamente en Google Sheets.', 'success');
+        form.reset();
+      } catch (error) {
+        addToQueue(payload);
+        showMessage(`No se pudo enviar ahora. El registro quedó guardado localmente para reenvío posterior. Motivo: ${error.message}`, 'info');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar contacto';
+      }
+    });
+
+    // Cargar configuración inicial
+    scriptUrlInput.value = getSavedUrl();
+    updateStatus();
+  </script>
+</body>
+</html>
